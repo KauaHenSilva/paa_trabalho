@@ -3,7 +3,7 @@ import heapq
 def distancia_manhattan(x, y, destino):
     return abs(x - destino[0]) + abs(y - destino[1])
 
-def labirinto_gulosos(maze, x, y, caminho, visitado, destino=None):
+def labirinto_gulosos(maze, x, y, caminho, visitado, destino):
     """
     Resolve um labirinto usando o algoritmo guloso com heurística de Manhattan.
     :param maze: Matriz representando o labirinto (0 = caminho, 1 = parede).
@@ -14,8 +14,6 @@ def labirinto_gulosos(maze, x, y, caminho, visitado, destino=None):
     :return: True se o caminho até a saída for encontrado, False caso contrário.
     """
     linhas, colunas = len(maze), len(maze[0])
-    if destino is None:
-        destino = (linhas - 1, colunas - 1)
 
     heap = [(distancia_manhattan(x, y, destino), x, y, [])]
 

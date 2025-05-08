@@ -1,4 +1,4 @@
-def labirinto_backtracking(maze, x, y, caminho, visitado, destino=None):
+def labirinto_backtracking(maze, x, y, caminho, visitado, destino):
     """
     Resolve um labirinto usando o algoritmo de backtracking.
     :param maze: Matriz representando o labirinto (0 = caminho, 1 = parede).
@@ -9,21 +9,20 @@ def labirinto_backtracking(maze, x, y, caminho, visitado, destino=None):
     :return: True se o caminho até a saída for encontrado, False caso contrário.
     """
     linhas, colunas = len(maze), len(maze[0])
-
     if x < 0 or y < 0 or x >= linhas or y >= colunas or maze[x][y] == 1 or visitado[x][y]:
         return False
 
-    if (x, y) == (linhas - 1, colunas - 1):
+    if (x, y) == destino:
         caminho.append((x, y))
         return True
 
     visitado[x][y] = True
     caminho.append((x, y))
 
-    if (labirinto_backtracking(maze, x+1, y, caminho, visitado) or
-        labirinto_backtracking(maze, x, y+1, caminho, visitado) or
-        labirinto_backtracking(maze, x-1, y, caminho, visitado) or
-        labirinto_backtracking(maze, x, y-1, caminho, visitado)):
+    if (labirinto_backtracking(maze, x+1, y, caminho, visitado, destino) or
+        labirinto_backtracking(maze, x, y+1, caminho, visitado, destino) or
+        labirinto_backtracking(maze, x-1, y, caminho, visitado, destino) or
+        labirinto_backtracking(maze, x, y-1, caminho, visitado, destino)):
         return True
 
     caminho.pop()
