@@ -1,39 +1,26 @@
 def labirinto_backtracking(maze, x, y, caminho, visitado, destino):
+    
     linhas, colunas = len(maze), len(maze[0])
+    pilha = [((x, y), [(x, y)])]  # Pilha com ((x, y), caminho percorrido)
 
-    if x < 0 or y < 0 or x >= linhas or y >= colunas:
-        return False
-    if maze[x][y] == 1 or visitado[x][y]:
-        return False
+    while pilha:
+        (x_atual, y_atual), caminho_atual = pilha.pop()
 
-    visitado[x][y] = True
-    caminho.append((x, y))
+        if x_atual < 0 or y_atual < 0 or x_atual >= linhas or y_atual >= colunas:
+            continue
+        
+        if maze[x_atual][y_atual] == 1 or visitado[x_atual][y_atual]:
+            continue
 
-    if (x, y) == destino:
-        return True
+        visitado[x_atual][y_atual] = True
 
-    for dx, dy in [(1,0), (0,1), (-1,0), (0,-1)]:
-        novo_x, novo_y = x + dx, y + dy
-        if labirinto_backtracking(maze, novo_x, novo_y, caminho, visitado, destino):
+        if (x_atual, y_atual) == destino:
+            caminho.extend(caminho_atual)
             return True
 
-    caminho.pop()
-    visitado[x][y] = False
+        for dx, dy in [(1,0), (0,1), (-1,0), (0,-1)]:  # baixo, direita, cima, esquerda
+            novo_x, novo_y = x_atual + dx, y_atual + dy
+            nova_rota = caminho_atual + [(novo_x, novo_y)]
+            pilha.append(((novo_x, novo_y), nova_rota))
+
     return False
-
-if __name__ == "__main__":
-    labirinto = [
-        [0, 1, 0, 0, 0],
-        [0, 1, 0, 1, 0],
-        [0, 0, 0, 1, 0],
-        [1, 1, 0, 1, 0],
-        [0, 0, 0, 0, 0]
-    ]
-    caminho = []
-    visitado = [[False] * len(labirinto[0]) for _ in range(len(labirinto))]
-    destino = (4, 4)
-
-    if labirinto_backtracking(labirinto, 0, 0, caminho, visitado, destino):
-        print("Caminho encontrado:", caminho)
-    else:
-        print("Nenhum caminho encontrado.")
